@@ -1,35 +1,31 @@
 .DEFAULT_GOAL := build
 
 .PHONY: build
-build: test lint install
+build: go-get go-test lint go-install
+
+.PHONY: go-get
+go-get:
+	@go get ./...
 
 .PHONY: install
-install:
+go-install:
 	@go install ./cmd/...
 
+.PHONY: go-test
+go-test:
+	@go test ./...
+
+.PHONY: go-vet
+go-vet:
+	@go vet ./...
+
 .PHONY: install-tools
-install-tools:
-	@go get ./...
+install-tools: go-get
 	@cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
 
 .PHONY: lint
-lint: staticcheck vet
-
-.PHONY: staticcheck
-staticcheck:
+lint: go-vet
 	@staticcheck ./...
-
-.PHONY: test
-test:
-	@go test ./...
-
-.PHONY: tidy
-tidy:
-	@go mod tidy
-
-.PHONY: vet
-vet:
-	@go vet ./...
 
 .PHONY: watch
 watch: install-tools
