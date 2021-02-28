@@ -1,7 +1,11 @@
 .DEFAULT_GOAL := build
 
 .PHONY: build
-build: test lint
+build: test lint install
+
+.PHONY: install
+install:
+	@go install ./cmd/...
 
 .PHONY: install-tools
 install-tools:
