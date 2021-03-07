@@ -5,5 +5,5 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use: "discv5-demo",
+	Use: "udp-demo",
 }
